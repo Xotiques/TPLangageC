@@ -1,0 +1,240 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int add(int pts){
+    int s;
+    srand(time(NULL));
+    int a = rand() %101;
+    int b = rand() %101;
+    printf("Quelle est la somme de %d et %d ?\n", a,b);
+    scanf("%d", &s);
+    if (s == a+b) {
+        printf("Bravo vous avez la bonne réponse !!\n");
+        pts = pts + 10;
+        return pts;
+    }
+    printf("Une deuxième chance !!");
+    scanf("%d", &s);
+    if (s == a+b) {
+        printf("Bravo vous avez la bonne réponse !!\n");
+        pts = pts + 5;
+        return pts;
+    }
+    printf("Une troisième chance !!");
+    scanf("%d", &s);
+    if (s == a+b) {
+        printf("Bravo vous avez la bonne réponse !!\n");
+        pts = pts + 1;
+        return pts;
+    }
+    else {
+        printf("Dommage, la bonne réponse était %d \n", a+b);
+        return pts;
+    }
+}
+int multiplication(int pts) {
+    srand(time(NULL));
+    int a, b, c;
+    a = rand() % 10 + 1;
+    b = rand() % 10 + 1;
+    printf("Quel est le produit de %d et %d ?\n", a, b);
+    scanf("%d", &c);
+    if (c == a * b) {
+        printf("Bravo !\n");
+        pts = pts + 10;
+        return pts;
+    }
+    printf("Une deuxième chance !!");
+    scanf("%d", &c);
+    if (c == a*b) {
+        printf("Bravo, vous avez la bonne réponse !!");
+        pts = pts + 5;
+        return pts;
+    }
+    printf("Une troisième chance !!");
+    scanf("%d", &c);
+    if (c == a*b) {
+        printf("Bravo, vous avez la bonne réponse !!");
+        pts  = pts + 1;
+        return pts;
+    }
+    else {
+        printf("Dommage, la solution était %d", a*b);
+    }
+}
+int soustraction(int pts){
+    int s, c;
+    srand(time(NULL));
+    int a = rand() %101;
+    int b = rand() %101;
+    if (a<b) {
+        c=a;
+        a=b;
+        b=c;}
+    printf("Quelle est la différence de %d et %d ?\n", a,b);
+    scanf("%d", &s);
+    if (s == a-b) {
+        printf("Bravo vous avez la bonne réponse !!\n");
+        pts = pts + 10;
+        return pts;
+    }
+    printf("Une deuxième chance !!");
+    scanf("%d", &s);
+    if (s == a-b) {
+        printf("Bravo vous avez la bonne réponse !!\n");
+        pts = pts + 5;
+        return pts;
+    }
+    printf("Une troisième chance !!");
+    scanf("%d", &s);
+    if (s == a-b) {
+        printf("Bravo vous avez la bonne réponse !!\n");
+        pts = pts + 1;
+        return pts;
+    }
+    else {
+        printf("Dommage, la bonne réponse était %d \n", a-b);
+        return pts;
+    }
+}
+int tables(pts){
+    int n, p;
+    printf("Vous voulez la table de quel nombre ?\n");
+    scanf("%d", &n);
+    for (int i = 1; i<=10; i++) {
+        printf("%d * %d = %d\n", n, i, n*i);
+    }
+    for (int j = 1; j<=10; j++) {
+        printf("%d * %d = ?", n, j);
+        scanf("%d", &p);
+        if (p== n*j){
+            printf("Vous avez la bonne réponse !\n");
+            pts=pts+1;
+        }
+        else {
+            printf("Dommage, la bonne réponse était %d\n", n*j);
+            pts=pts-1;
+        }
+    }
+    return pts;
+}
+int divisions(pts){
+    int q;
+    srand(time(NULL));
+    int a = rand() %10 + 1;
+    int b = rand() %101;
+    while (b<a) {
+        b= rand() %101;
+    }
+    printf("Quel est le quotient de %d par %d ?", b, a);
+    scanf("%d", &q);
+    if (b == a*q +b%a) {
+        printf("Bravo, vous avez la bonne réponse\n");
+        pts = pts + 10;
+        return pts;
+    }
+    printf("Deuxième chance !!");
+    scanf("%d", &q);
+    if (b == a*q +b%a) {
+        printf("Bravo, vous avez la bonne réponse\n");
+        pts = pts + 5;
+        return pts;
+    }
+    printf("Troisième chance !!");
+    scanf("%d", &q);
+    if (b == a*q +b%a) {
+        printf("Bravo, vous avez la bonne réponse\n");
+        pts = pts + 1;
+        return pts;
+    }
+    else{
+        printf("Dommage, la réponse était %d \n", (b-b%a)/a);
+        return pts;
+    }
+}
+
+void recupererDateHeure(char* date, char* heure) {
+    time_t t;
+    struct tm* tm_info;
+
+    // Récupérer l'heure système actuelle
+    time(&t);
+
+    // Convertir l'heure en structure tm
+    tm_info = localtime(&t);
+
+    // Formater la date sous la forme "AAAA-MM-JJ"
+    strftime(date, 20, "%Y-%m-%d", tm_info);
+
+    // Formater l'heure sous la forme "HH:MM:SS"
+    strftime(heure, 10, "%H:%M:%S", tm_info);}
+
+int recupererScore(char* nom) {
+    FILE* fpts = fopen("FICHIER.txt", "r");
+
+    char donnees[100];
+    char nomfichier[50];
+    int pts;
+    char date[20], heure[10];
+
+
+    while (fgets(donnees, sizeof(donnees), fpts)) {
+        sscanf(donnees, "%s %d %s %s", nomfichier, &pts, date, heure);
+        if (strcmp(nomfichier, nom) == 0) {
+            fclose(fpts);
+            return pts;
+        }
+    }
+
+    fclose(fpts);
+    return -1;
+}
+
+int main() {
+    int i, s, a, b, pts;
+    char nom[20];
+    i = 1;
+    pts = 0;
+    printf("Entrez votre nom pour récupérer votre score: ");
+    scanf("%s", nom);
+    pts = recupererScore(nom);
+
+    if (pts != -1) {
+        printf("Votre score est : %d\n", pts);
+    } else {
+        printf("Aucun score trouvé pour ce nom.\n");
+    }
+    while (i!=0){
+    printf("+--------------------------------+\n");
+    printf("|1 : Addition                    |\n");
+    printf("|2 : Soustraction                |\n");
+    printf("|3 : Multiplication              |\n");
+    printf("|4 : Tables des multiplications  |\n");
+    printf("|5 : Divisions                   |\n");
+    printf("|0 : Sortir du jeu               |\n");
+    printf("+--------------------------------+\n");
+    printf("Quel est votre choix ?\n");
+    scanf("%d", &i);
+    switch (i) {
+    case 0 : printf("Sortie\n"); break;
+    case 1 : printf("Addition\n"); pts=add(pts); printf("Vous avez maintenant %d points\n", pts); break;
+    case 2 : printf("Soustraction\n"); pts=soustraction(pts); printf("Vous avez maintenant %d points\n", pts); break;
+    case 3 : printf("Multiplications\n"); pts=multiplication(pts); printf("Vous avez maintenant %d points\n", pts); break;
+    case 4 : printf("Tables des multiplications\n"); pts=tables(pts); break;
+    case 5 : printf("Divisions\n"); pts= divisions(pts); printf("Vous avez maintenant %d points\n", pts); break;
+    default : printf("Erreur, entrez un nombre entre 0 et 5\n");
+    }
+    }
+    printf("Merci de votre visite\n");
+    printf("Vous avez gagné %d points", pts);
+    char date[20];
+    char heure[20];
+    recupererDateHeure(date, heure);
+    FILE *fpts;
+    fpts = fopen("FICHIER.txt", "a");
+    fprintf(fpts, "%s %d %s %s\n", nom, pts, date, heure);
+    fclose(fpts);
+
+    return 0;
+}
